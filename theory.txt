@@ -1,0 +1,514 @@
+Django:
+==========
+django is framework written in python language.
+
+what is framework?
+=============
+code written by someone else and can be used in 
+our project.as a developer has to ficus on a main
+logic.
+
+Virtual environment:
+=====================
+   project A                Project B
+work on python 2.1          work on python 2.2
+when i install python2.1 and 2.2 on machine
+
+VE=>project A
+VE=>project B
+Virtual environment keep your project isolated from 
+global environment ,so that installation any
+module in the project cannot be accesed outside the
+environment and vice versa.
+
+steps to create django project and application:
+=======================================
+step 1:insatll virtualenv module to create VE
+        pip insatll virtualenv
+step 2:create VE
+       virtualenv environmentname
+       eg:virtualenv env
+       to activate VE
+       env\Scripts\activate
+step 3:pip insatll django
+
+step 4:create project i django
+     django-admin startproject projectname
+     eg:django-admin startproject ecomm
+
+        cd ecomm
+
+step 5:create application
+       python manage.py startapp applicationname
+       eg:python manage.py startapp ecommapp
+
+       python manage.py runserver
+
+django architecture:
+=======================
+MVT=>Model,View,Template
+Model=>is a representation of table in database.
+  Model in django == table in database
+
+View=>view is views.py file in django application
+  views are business logic or logic for application.
+  There are 2 types of views:
+  1]functional based view
+  2]class based views
+
+Template=>is representation layes of your application
+   or front end that is they are html filles.
+
+eg:Form               views.py                   Model.py
+name:-------------=>data is extracted from=>data inserted database
+rno:-----------      form                     table
+save
+
+Request Response Cycle:
+========================
+       https://itvedant.com/carrier
+       https://itvedant.com/placement
+Client->https://itvedant.com/contact->django server
+    |                                         |
+    |                                         |
+    |    not found                     false  |
+    | ---------------- if received url==url patterns in urls.py of project
+    |                                            |
+    |                                            |true
+    |                                            |
+    |                                            views.py
+    |                                            |
+    |                                            |
+    |                                            call a function linked  with
+    |                                            url 
+    |                                            def functiion
+    ------------------------------------------------return Response
+
+views provide Response with the help of functiion
+syntax:def functionname():
+            body of functiion
+            return Response
+
+to return Response there are inbuilt functiion in django:
+1]HttpResponse
+2]render()
+
+definig url patterns
+====================
+urlpatterns=[
+    path('urlname',views.functiion,name)
+]
+
+ecomm->ecommapp->views.py->home about vontact
+     ->ecommapp2->views.py->home about contact
+     ->ecommapp3->views.py->home about contact
+ecomm->urls.py->views.home
+
+ecomm->ecommapp->urls.py
+       ecommapp2->urls.py
+       ecommapp3->urls.py
+
+input()=>default string datatye
+iport sys argv =>sys.argv[0]
+python one.py 1 2 3
+['python','1','2','3']
+
+class based views:
+=============
+in this views,a class is defined which is inherited
+from inbuilt django class view.
+
+views.py
+========
+step 1:import View class from django.views
+step 2:define view clas as follow:
+    class viewclassname(View):
+       def get(self,request):
+              body of the method
+              return response
+       def post(self,request):
+              body of method 
+              retrun response
+
+templates:
+=============
+step 1:create a folder templates in same 
+heirarchy of ecomm,ecommapp..
+
+step 2:setting for template folder in setting.py
+     file so that templates folder is recognised by django
+     to avoid TEmplateNotfounderror
+      import os
+      'DIRS': [os.path.join(BASE_DIR,'templates')],
+      BASE_DIR=>root directory
+
+sending data to html file:
+=======================
+HTML is a tagging language,it is not a programming
+In web application there is a need to display data 
+fecth from the database in html by storing that data in
+variable.so there i need to have a variable in HTML.
+
+DTL:django template language
+========================
+To implement following programming language
+concepts in html which is a tagging language,ther
+is need of DTL.
+1]variable interpolation
+2]decision control sttructure(if..else)
+3]loop control structure(loops)
+4]reusability 
+5]template inheritance
+data from view to html file is always send in the
+form of dictionary.
+return render(request,'html file',dictionary)
+thoug data is passed as dictionary,that data is
+accessed with help of key in html file
+as follows:
+syntax:{{keyname}}
+
+decision control instruction:
+=======================
+1]if statemnt 
+  syntax:{% if condition %}
+         {% endif %}
+
+2]if else
+   {% if condition %}
+      html code
+   {% else %}
+     html code
+   {% endif %}
+
+3]elseif
+  {% if condition %}
+  {% elif condition %}
+  {% elif condition %}
+  {% else %}
+  {% endif %}
+
+Loop control instruction:
+=======================
+{% for x in collection %}
+       html code
+{% endfor %}
+
+product
+id      name      category      price
+=======================================
+1       samsung     mobile      20000
+2       jeans       cloth        500
+3       adidas shoes shoes       3000
+4       vivo         mobile       15000
+
+[
+       {'id':1,'name':'samsung','cat':'mobile','price':20000},
+       {'id':2,'name':'jeans','cat':'cloth','price':500},
+       {'id':3,'name':'adidas shoes','cat':'shoes','price':3000},
+       {'id':4,'name':'vivo','cat':'mobile','price':15000}
+]
+
+
+static files:
+===============
+css files,js files and images are static files.
+
+step 1:create static folder 
+step 2:create 3 sub folders in static folder
+         css folder
+         js folder
+         images 
+step 3:there is need to do static file settings
+   in settings.py
+   STATICFILES_DIRS=[
+    os.path.join(BASE_DIR,'static')
+]
+
+step 4:linking css, js
+    <link>
+    <script>
+    when there is need to link any of the static
+    file in html file,always mention {% load static %}
+    at the top of the html page.
+
+
+registartion.html login.html cart.html place_prder.html product_detail.html
+ header code     header      header 
+ main code        main      main
+ footer code     footer     footer
+
+ base.html:
+ ======
+ {% include 'header.html %}
+       {% block 'main %}
+       main code
+       {% endblock 'main %}
+ {% include 'footer.html %}
+
+user model:
+==================
+in built auth application ,contains user model
+that is used to store register user infomation for
+this application.
+
+tablename=>messageapp_msg
+model name=>Msg
+tablename=>auth_user
+model name=>User
+from django.contrib.auth.models import User
+
+sql query to check user in auth_user table
+============================
+select *from auth_user where
+username=uname and password=upass;
+
+authenticate():
+================
+this function check whether uname and upass entered by user
+with username and password in auth_user table.
+
+this function is in the auth model
+importing:
+---------
+from django.contrib.auth import authenticate
+
+syntax:
+========
+authenticate(usrename=uname,password=upass)
+this function retuns object or row if uname and upass entered
+by user user matches with any one of the username and password
+in auth_user table.
+otherwise ,if it did not match then it return None.
+
+session:
+==========
+is a piece of data that is stored on server side.
+data stored in the session table can be accessed anywhere in
+the application.
+Data stored in session is on server side hence it is secured.
+In django data from session stored in the database table known
+as django_sesion.
+
+login() function start session and store id of the
+authenticated user from auth_user table in session
+
+to fetch id of logged in user from session:
+================
+request.user.id=>gives id of logged in user
+
+logout():
+======
+this function destroy or end session .so id stored in the session
+will be deleted.
+
+is user login:->show logout option
+if user logout->show login and register
+
+to check whether user is authenticated or not:
+============
+request.is_authenticated
+
+if the uname and upass are correct or user is logged in then
+request.user.is_authenticated=>true
+
+if user is not logged in then
+request.user.is_authenticated=>false.
+
+user authentication in template(html):
+===================
+{% user.is_authenticated %}
+
+admin role:
+=============
+admin in django is called as superuser.
+
+create super user:
+==============
+python manage.py createsuperuser
+
+is_superuser:
+--------------
+this column value decides whether user is  A
+normal user or super user
+is_superuser value           user type
+======================================
+      0                     normal user
+      1                     superuser or admin
+
+is_staff:
+=========
+field value decides whether to allow user 
+to looged in into django administartion.
+
+is_staff value              allow login django admin
+=====================================
+   0                          No
+   1                          YEs
+is_active:
+==========
+this field value is used to check whether
+user is active  or inactive.
+
+is_active value        user active
+====================================
+   1                   active
+   0                   inactive
+
+create product model:
+================
+id name price cat pdetails is_active
+categories:
+========
+1->mobile
+2->shoes
+3->cloth
+
+register model in admin:
+===========
+step 1:open admin.py from application
+step 2:register your model by using following code
+   admin.site.register(modelname)
+
+inbuilt django form:
+================
+from django.contrib.auth.forms import UserCreationForm
+
+home page:
+==========
+fetch all prducts from Product table and sipaly those
+products on the home page.
+fecth only active products
+
+select  *from from ecommapp_product where is_active=1;
+
+ORM :
+=======
+modelame.objects.filter(condition)
+Product.objects.filter(is_active=True)
+
+cv=3
+product.objects.filter(cat=cv)
+
+sql query:
+=====
+select *from ecommapp_product where cat=3 and is_active=1
+ to check more than 1 condition for filter on the basis of category
+ 1]product must be active and it must be from select category by user
+ when there is need to check more then 1 condition in filter
+ fucntion use lookups and logical operators.
+  lookups are objects of in built Q class in
+  django.db.models
+  c1=Q(condition)
+  c2=Q(condition)
+  Modelname.objects.filter(c1&c2)
+
+  logical and in django ORM=&
+  logical NOT in django ORM=|
+
+range:
+=============
+filter between range:
+=========
+select *from ecommapp_product where
+price>=1000 and price<=5000 and is_active=1;
+
+ORM comparision operator:
+--------------
+column name=price
+                                  sql                           ORM
+less than 5000                 price<5000                price__lt=5000
+less than or equal to 5000     price<=5000               price__lte=5000
+greater than 1000             price>1000                 price__gt=1000
+gretaer than or eql to 1000   price>=1000               price__gte=1000 
+
+sorting n ORM:
+--------------
+modelname.objects.order_by('colname')=>ascending order
+modelname.objects.order_by('-colname')=>descending order
+
+image upload:
+============
+step 1:create field in the table or model to store image url
+step 2:pip install pillow
+step 3:makemigrations and migrate
+step 4:create media folder inouter project which will store image folder
+with its image
+step 5:settings.py
+   MEDIA_URL='/media/'
+   MEDIA_ROOT=os.path.join(BASE_DIR,'media/')
+
+urls.py:
+===========
+from django.conf import settings
+from django.conf.urls.static import static
+if settings.DEBUG:
+    urlpatterns+=static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
+
+   product_detail page:
+   =============
+   step 1:bind product id to the /pd
+   step 2:in product_detail view function fecth detail of that product
+   step 3:stored that details or row or objects in dictionary key
+   step 4:send those details to product_detail page and display
+
+   add to cart:
+   ==========
+   cart table  or model contains user details and product details.
+   user details can be represented by userid and product details  can
+   be represented by pid.
+
+   auth_user                         Product
+   ---------                       ----------------
+   id password                    id name  price cat
+   1                               1  vivo 2000  1
+   2                               2  shirt 500  3
+                                   3  oppo  3000 1
+   model:Cart
+   ---------
+   id uid pid
+   1  1   1
+   2  1   3
+
+   pid can be passed from product_details to addtocart function
+   uid can be fetched from session using request.user.id
+
+   cart.html:
+   ---------
+   user details     uid
+   product details   pid
+
+   cart page                        order page
+   ----------                    ---------------
+   user detail                        user detail
+   prodct detail        data shift    product detail
+   place order->click--------------->at the same time cart page data deleted
+
+   order table:
+   =========
+   id order-id pid   uid   qty
+   shift cart data for the user into order table
+   data from the cart must be deleted
+
+   Razorpay payment gateway integration:
+   ==========================
+   API keys:It is to authenticate requeat from django application.
+         key:value
+
+         pip install razorpay
+
+GMAIL integration:
+===========
+in settings.py:
+-------------
+
+#EMAIL SETTINGS
+EMAIL_HOST="smtp.gmail.com"
+EMAIL_HOST_USER="pooja.gada@itvedant.com"
+EMAIL_HOST_PASSWORD="izrq jvrp uvia syyl"
+EMAIL_PORT=587
+EMAIL_USE_TLS=TRUE
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+
+step 1:fetch all orders details of logged in user.
+step 2:concatenate in string and assign it to msg variable
+step 3:send that msg on the email

@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block 'main' %}
+<div class="row"><!---row2 start-->
+    <div class="col-md-4 bg-primary-subtle">
+        <h5>Filter By category</h5>
+        <hr>
+        <p><a href="/home3" class="anchor">By All</a></p>
+        <p><a href="/catfilter/1" class="anchor">By Mobile</a></p>
+        <p><a href="/catfilter/2" class="anchor">By Shoes</a></p>
+        <p><a href="/catfilter/3" class="anchor">By Cloth</a></p>
+        <h5>Filter By price Range</h5>
+        <hr>
+        <form action="/range">
+          <div class="mb-3">
+            <label for="one" class="form-label">Min:</label>
+            <input type="number" class="form-control" name="min" id="one" placeholder="enter min value">
+          </div>
+          <div class="mb-3">
+            <label for="two" class="form-label">Max:</label>
+            <input type="number" class="form-control" name="max" id="two" placeholder="enter max value">
+          </div>
+          <div class="mb-3">
+           <input type="submit" class="btn btn-danger" value="search">
+          </div>
+        </form>
+        <h5>Sort By Price </h5>
+        <hr>
+        <p><a href="/sort/0" class="anchor">Low to High</a></p>
+        <p><a href="/sort/1" class="anchor">High to low</a></p>
+    </div>
+    <div class="col-md-8">
+          <div class="row">
+            {% for x in products %}
+              <div class="col-md-4">
+                <div class="card" style="width: 100%;">
+                  <img src="{{x.pimage.url}}" class="card-img-top" alt="..." width="100%" height="190px">
+                  <div class="card-body">
+                    <h5 class="card-title">{{x.name}}</h5>
+                    <p class="card-text">Rs.{{x.price}}</p>
+                    {% if x.cat == 1 %}
+                    <p class="card-text">Mobile</p>
+                    {% elif x.cat == 2 %}
+                    <p class="card-text">Shoes</p>
+                    {% else %}
+                    <p class="card-text">Cloth</p>
+                    {% endif %}
+                    <a href="/pd/{{x.id}}" class="btn btn-primary">See Details</a>
+                  </div>
+                </div>
+              </div>
+              {% endfor %}
+             
+              
+              
+</div>
+</div><!---row2 end-->
+{% endblock 'main' %}
